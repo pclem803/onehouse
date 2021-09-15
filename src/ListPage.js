@@ -8,22 +8,22 @@ import {
   Field,
   Control,
   Heading,
-  Divider
+  Divider,
 } from "rbx";
 import { ColumnGroup } from "rbx/grid/columns/column-group";
 import ItemList from "./ItemList";
 import { saveItem } from "./firebaseHelpers";
 import ReceiptModal from "./ReceiptModal";
 import ShoppingTrips from "./Components/ShoppingTrips";
-import WelcomeScreen from "./Components/WelcomeScreen"
-import SignInScreen from './Components/SignInScreen'
+import WelcomeScreen from "./Components/WelcomeScreen";
+import SignInScreen from "./Components/SignInScreen";
 
 const useSelection = () => {
   const [selected, setSelected] = useState([]);
-  const toggle = x => {
+  const toggle = (x) => {
     setSelected(
       selected.includes(x)
-        ? selected.filter(y => y !== x)
+        ? selected.filter((y) => y !== x)
         : [x].concat(selected)
     );
   };
@@ -35,22 +35,17 @@ const useSelection = () => {
 
 const ListPage = ({ propItems, user, house }) => {
   const [productName, setProductName] = useState("");
-  const [unit, setUnit] = useState("");
+
   const [selected, clearSelected, toggle] = useSelection();
   const [attachReceipt, setAttachReceipt] = useState(false);
 
-  const handleProductChange = event => {
+  const handleProductChange = (event) => {
     setProductName(event.target.value);
   };
 
-  const handleUnitChange = event => {
-    setUnit(event.target.value);
-  };
-
   const handleSubmit = () => {
-    saveItem({ name: productName, unit: unit, user: user, houseName: house });
+    saveItem({ name: productName, user: user, houseName: house });
     setProductName("");
-    setUnit("");
   };
 
   if (user && house) {
@@ -83,17 +78,9 @@ const ListPage = ({ propItems, user, house }) => {
                 <Control expanded>
                   <Input
                     size="medium"
-                    placeholder="Eggs"
+                    placeholder="Eggs (dozen)"
                     value={productName}
                     onChange={handleProductChange}
-                  />
-                </Control>
-                <Control expanded>
-                  <Input
-                    size="medium"
-                    placeholder="dozen"
-                    value={unit}
-                    onChange={handleUnitChange}
                   />
                 </Control>
                 <Control>
@@ -112,11 +99,9 @@ const ListPage = ({ propItems, user, house }) => {
       </Container>
     );
   } else if (user) {
-    return (
-      <SignInScreen user={user}/>
-    );
+    return <SignInScreen user={user} />;
   } else {
-    return <WelcomeScreen/>;
+    return <WelcomeScreen />;
   }
 };
 
